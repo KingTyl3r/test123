@@ -9,7 +9,8 @@
 -- Configuration
 local Config = {
     UseCustomNUI = true,  -- Set to true to use the custom NUI, false to use default
-    Debug = false
+    Debug = false,
+    LimbHealthResource = 'limb_health'  -- Resource name for limb health integration (if available)
 }
 
 -- State
@@ -67,11 +68,13 @@ local function buildNUIPayload(playerData, rightInventory)
         local slotName = 'hotkey' .. i
         if playerData and playerData.inventory and playerData.inventory[i] then
             local item = playerData.inventory[i]
-            payload.hotkeys[slotName] = {
-                name = item.name,
-                label = item.label,
-                count = item.count
-            }
+            if item and item.name then
+                payload.hotkeys[slotName] = {
+                    name = item.name,
+                    label = item.label or item.name,
+                    count = item.count or 1
+                }
+            end
         end
     end
     
@@ -79,10 +82,10 @@ local function buildNUIPayload(playerData, rightInventory)
     -- This requires custom metadata handling on the server
     
     -- Get limb health if available (requires external health system)
-    -- Example: If using a limb health resource
-    if GetResourceState('limb_health') == 'started' then
+    -- Example: If using a limb health resource (configurable via Config.LimbHealthResource)
+    if Config.LimbHealthResource and GetResourceState(Config.LimbHealthResource) == 'started' then
         local success, limbData = pcall(function()
-            return exports['limb_health']:getLimbHealth()
+            return exports[Config.LimbHealthResource]:getLimbHealth()
         end)
         if success and limbData then
             payload.limbHealth = limbData

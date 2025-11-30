@@ -30,15 +30,22 @@ body {
     max-height: 800px;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgba(20, 20, 30, 0.85) 0%, rgba(30, 30, 50, 0.8) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 30, 50, 0.92) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     animation: fadeIn 0.3s ease-out;
+}
+
+/* Performance fallback for devices that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+    #inventory-container {
+        background: linear-gradient(135deg, rgba(20, 20, 30, 0.98) 0%, rgba(30, 30, 50, 0.98) 100%);
+    }
 }
 
 @keyframes fadeIn {
