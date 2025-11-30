@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="inventory-container" class="hidden">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="inventory">Inventory</button>
+                <button class="mode-btn" data-mode="utility">Utility</button>
+            </div>
+            <div class="weight-display">
+                <span id="current-weight">0</span> / <span id="max-weight">30000</span>g
+            </div>
+            <button class="close-btn" id="close-btn">&times;</button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Left Panel - Equipment and Health -->
+            <div class="left-panel">
+                <!-- Equipment Slots -->
+                <div class="equipment-section">
+                    <div class="equipment-slot" data-slot="backpack">
+                        <div class="slot-icon backpack-icon"></div>
+                        <span class="slot-label">Backpack</span>
+                    </div>
+                    <div class="equipment-slot" data-slot="parachute">
+                        <div class="slot-icon parachute-icon"></div>
+                        <span class="slot-label">Parachute</span>
+                    </div>
+                    <div class="equipment-slot" data-slot="armor">
+                        <div class="slot-icon armor-icon"></div>
+                        <span class="slot-label">Armor</span>
+                    </div>
+                    <div class="equipment-slot" data-slot="weapon1">
+                        <div class="slot-icon weapon-icon"></div>
+                        <span class="slot-label">Weapon 1</span>
+                        <span class="hotkey-label">1</span>
+                    </div>
+                    <div class="equipment-slot" data-slot="weapon2">
+                        <div class="slot-icon weapon-icon"></div>
+                        <span class="slot-label">Weapon 2</span>
+                        <span class="hotkey-label">2</span>
+                    </div>
+                </div>
+
+                <!-- Body Silhouette with Health Bars -->
+                <div class="body-silhouette">
+                    <svg viewBox="0 0 100 200" class="body-svg">
+                        <!-- Head -->
+                        <ellipse cx="50" cy="20" rx="15" ry="18" class="body-part" data-part="head"/>
+                        <!-- Body/Torso -->
+                        <rect x="30" y="40" width="40" height="50" rx="5" class="body-part" data-part="body"/>
+                        <!-- Left Arm -->
+                        <rect x="10" y="42" width="18" height="45" rx="5" class="body-part" data-part="leftArm"/>
+                        <!-- Right Arm -->
+                        <rect x="72" y="42" width="18" height="45" rx="5" class="body-part" data-part="rightArm"/>
+                        <!-- Left Leg -->
+                        <rect x="32" y="92" width="15" height="55" rx="5" class="body-part" data-part="leftLeg"/>
+                        <!-- Right Leg -->
+                        <rect x="53" y="92" width="15" height="55" rx="5" class="body-part" data-part="rightLeg"/>
+                    </svg>
+                    <!-- Health Bars -->
+                    <div class="health-bars">
+                        <div class="health-bar" data-part="head">
+                            <div class="health-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="health-bar" data-part="leftArm">
+                            <div class="health-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="health-bar" data-part="rightArm">
+                            <div class="health-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="health-bar" data-part="body">
+                            <div class="health-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="health-bar" data-part="leftLeg">
+                            <div class="health-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="health-bar" data-part="rightLeg">
+                            <div class="health-fill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotkey Slots -->
+                <div class="hotkey-section">
+                    <div class="hotkey-slot" data-slot="hotkey3">
+                        <span class="hotkey-number">3</span>
+                    </div>
+                    <div class="hotkey-slot" data-slot="hotkey4">
+                        <span class="hotkey-number">4</span>
+                    </div>
+                    <div class="hotkey-slot" data-slot="hotkey5">
+                        <span class="hotkey-number">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Main Inventory Grid -->
+            <div class="center-panel">
+                <div class="inventory-grid" id="main-inventory">
+                    <!-- Slots will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Right Panel - Backpack (conditional) -->
+            <div class="right-panel hidden" id="backpack-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Backpack</span>
+                    <span class="backpack-weight"><span id="backpack-current-weight">0</span>/<span id="backpack-max-weight">10000</span>g</span>
+                </div>
+                <div class="inventory-grid" id="backpack-inventory">
+                    <!-- Backpack slots will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tooltip -->
+        <div class="tooltip hidden" id="tooltip">
+            <div class="tooltip-header">
+                <span class="tooltip-name"></span>
+                <span class="tooltip-count"></span>
+            </div>
+            <div class="tooltip-description"></div>
+            <div class="tooltip-weight"></div>
+            <div class="tooltip-metadata"></div>
+        </div>
+
+        <!-- Drag Preview -->
+        <div class="drag-preview hidden" id="drag-preview">
+            <img src="" alt="" class="drag-image">
+            <span class="drag-count"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
