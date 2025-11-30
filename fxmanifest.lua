@@ -28,8 +28,13 @@ server_scripts {
     'init.lua'
 }
 
-client_script 'init.lua'
+client_scripts {
+    'init.lua',
+    'client/ox_nui_integration.lua',
+}
 
+-- Default UI page (ox_inventory built-in UI)
+-- To use the custom NUI, change this to 'web/ui.html'
 ui_page 'web/build/index.html'
 
 files {
@@ -45,4 +50,9 @@ files {
     'modules/**/client.lua',
     'modules/bridge/**/client.lua',
     'data/*.lua',
+    -- Custom NUI files
+    'web/ui.html',
+    'web/style.css',
+    'web/script.js',
+    'web/preview_inventory_red_blue_fixed.svg',
 }
