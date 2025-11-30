@@ -284,13 +284,11 @@
     /**
      * Format weight for display
      * @param {number} weight - Weight in grams
-     * @returns {string} - Formatted weight
+     * @returns {string} - Formatted weight with proper formatting
      */
     function formatWeight(weight) {
-        if (weight >= 1000) {
-            return (weight / 1000).toFixed(1) + 'kg';
-        }
-        return weight + 'g';
+        // Always display in grams with thousands separator for consistency
+        return weight.toLocaleString() + 'g';
     }
 
     /**
@@ -667,8 +665,12 @@
                 'Content-Type': 'application/json; charset=UTF-8'
             },
             body: JSON.stringify(data)
-        }).catch(() => {
-            // Silently catch errors in dev environment
+        }).catch((error) => {
+            // In development/browser testing, NUI callbacks will fail
+            // Only log errors that might indicate real issues
+            if (window.location.protocol !== 'file:' && window.location.hostname !== 'localhost') {
+                console.warn('[NUI] Callback failed for event:', event, error);
+            }
         });
     }
 

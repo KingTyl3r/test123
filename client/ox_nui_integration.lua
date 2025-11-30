@@ -6,6 +6,11 @@
     It also registers hotkey bindings and forwards NUI callbacks to the server.
 
     IMPORTANT: Set Config.UseCustomNUI = true to enable the custom UI
+    
+    NOTE: This file expects the following globals from ox_inventory:
+    - PlayerData (table) - Player inventory data populated by ox_inventory
+    - shared (table) - Shared configuration including playerweight
+    These are defined in ox_inventory's init.lua and client.lua when the resource loads.
 ]]
 
 -- Configuration
@@ -13,11 +18,45 @@ local Config = {
     UseCustomNUI = false,  -- Set to true to use the custom red/blue NUI instead of default ox_inventory UI
     ImagePath = 'nui://ox_inventory/web/images/',
     DefaultSlots = 24,     -- 8x3 grid
+    DefaultMaxWeight = 30000,  -- Default max weight if shared.playerweight is unavailable
+    -- Slot mappings - configure which inventory slots map to equipment/hotkey positions
+    -- Adjust these based on your inventory layout
+    SlotMappings = {
+        weapon1 = 1,   -- Slot 1 maps to Weapon 1
+        weapon2 = 2,   -- Slot 2 maps to Weapon 2
+        hotkey3 = 3,   -- Slot 3 maps to Hotkey 3
+        hotkey4 = 4,   -- Slot 4 maps to Hotkey 4
+        hotkey5 = 5,   -- Slot 5 maps to Hotkey 5
+    },
 }
 
 -- State tracking
 local isNUIOpen = false
 local currentInventoryData = nil
+
+-- Helper to safely get player inventory data
+local function getPlayerInventory()
+    if PlayerData and PlayerData.inventory then
+        return PlayerData.inventory
+    end
+    return {}
+end
+
+-- Helper to safely get player weight
+local function getPlayerWeight()
+    if PlayerData and PlayerData.weight then
+        return PlayerData.weight
+    end
+    return 0
+end
+
+-- Helper to safely get max weight
+local function getMaxWeight()
+    if shared and shared.playerweight then
+        return shared.playerweight
+    end
+    return Config.DefaultMaxWeight
+end
 
 -- Helper function to build normalized inventory payload for NUI
 local function buildNUIPayload(playerInventory, playerWeight, playerMaxWeight)
@@ -38,20 +77,19 @@ local function buildNUIPayload(playerInventory, playerWeight, playerMaxWeight)
                     metadata = item.metadata or {}
                 }
 
-                -- Check for equipment slots (weapon1, weapon2 are slots 1, 2)
-                -- TODO: Adjust slot mapping based on your inventory configuration
-                if slot == 1 then
+                -- Map slots to equipment positions using configurable mappings
+                if slot == Config.SlotMappings.weapon1 then
                     equipment.weapon1 = items[slot]
-                elseif slot == 2 then
+                elseif slot == Config.SlotMappings.weapon2 then
                     equipment.weapon2 = items[slot]
                 end
 
-                -- Hotkey slots (3, 4, 5)
-                if slot == 3 then
+                -- Map slots to hotkey positions
+                if slot == Config.SlotMappings.hotkey3 then
                     hotkeys.hotkey3 = items[slot]
-                elseif slot == 4 then
+                elseif slot == Config.SlotMappings.hotkey4 then
                     hotkeys.hotkey4 = items[slot]
-                elseif slot == 5 then
+                elseif slot == Config.SlotMappings.hotkey5 then
                     hotkeys.hotkey5 = items[slot]
                 end
             end
@@ -103,9 +141,9 @@ local function openCustomNUI(inventoryData)
     if isNUIOpen then return end
 
     local payload = buildNUIPayload(
-        inventoryData.items or PlayerData.inventory,
-        inventoryData.weight or PlayerData.weight,
-        inventoryData.maxWeight or shared.playerweight
+        inventoryData.items or getPlayerInventory(),
+        inventoryData.weight or getPlayerWeight(),
+        inventoryData.maxWeight or getMaxWeight()
     )
 
     payload.action = 'openInventory'
@@ -131,9 +169,9 @@ local function updateCustomNUI(inventoryData)
     if not isNUIOpen then return end
 
     local payload = buildNUIPayload(
-        inventoryData.items or PlayerData.inventory,
-        inventoryData.weight or PlayerData.weight,
-        inventoryData.maxWeight or shared.playerweight
+        inventoryData.items or getPlayerInventory(),
+        inventoryData.weight or getPlayerWeight(),
+        inventoryData.maxWeight or getMaxWeight()
     )
 
     payload.action = 'updateInventory'
