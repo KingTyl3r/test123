@@ -30,7 +30,13 @@ server_scripts {
 
 client_script 'init.lua'
 
+-- Custom NUI integration (optional - enable by adding to client_scripts)
+-- client_script 'client/ox_nui_integration.lua'
+
 ui_page 'web/build/index.html'
+
+-- Alternative custom NUI (uncomment to use instead of default)
+-- ui_page 'web/ui.html'
 
 files {
     'client.lua',
@@ -45,4 +51,10 @@ files {
     'modules/**/client.lua',
     'modules/bridge/**/client.lua',
     'data/*.lua',
+    -- Custom NUI files
+    'web/ui.html',
+    'web/style.css',
+    'web/script.js',
+    'web/preview_inventory_red_blue_fixed.svg',
+    'client/ox_nui_integration.lua',
 }
