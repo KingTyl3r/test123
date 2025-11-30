@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OX Inventory - Modern UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="inventory-container" class="hidden">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="mode-toggle">
+                <button id="btn-inventory" class="mode-btn active">Inventory</button>
+                <button id="btn-utility" class="mode-btn">Utility</button>
+            </div>
+            <div class="weight-display">
+                <span id="weight-current">0.00</span> / <span id="weight-max">30.00</span> kg
+            </div>
+            <button id="btn-close" class="close-btn">✕</button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Left Panel - Equipment & Hotkeys -->
+            <div class="left-panel">
+                <div class="equipment-section">
+                    <h3>Equipment</h3>
+                    <div class="equipment-slots">
+                        <div class="equipment-slot" data-slot="backpack">
+                            <div class="slot-icon">🎒</div>
+                            <div class="slot-label">Backpack</div>
+                        </div>
+                        <div class="equipment-slot" data-slot="parachute">
+                            <div class="slot-icon">🪂</div>
+                            <div class="slot-label">Parachute</div>
+                        </div>
+                        <div class="equipment-slot" data-slot="armor">
+                            <div class="slot-icon">🛡️</div>
+                            <div class="slot-label">Armor</div>
+                        </div>
+                        <div class="equipment-slot" data-slot="weapon1">
+                            <div class="slot-icon">🔫</div>
+                            <div class="slot-label">Weapon 1</div>
+                            <div class="hotkey-badge">1</div>
+                        </div>
+                        <div class="equipment-slot" data-slot="weapon2">
+                            <div class="slot-icon">🔫</div>
+                            <div class="slot-label">Weapon 2</div>
+                            <div class="hotkey-badge">2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hotkey-section">
+                    <h3>Quick Slots</h3>
+                    <div class="hotkey-slots">
+                        <div class="hotkey-slot" data-slot="hotkey3">
+                            <div class="hotkey-badge">3</div>
+                        </div>
+                        <div class="hotkey-slot" data-slot="hotkey4">
+                            <div class="hotkey-badge">4</div>
+                        </div>
+                        <div class="hotkey-slot" data-slot="hotkey5">
+                            <div class="hotkey-badge">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Body Silhouette -->
+            <div class="center-panel">
+                <div class="body-container">
+                    <svg class="body-silhouette" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Head -->
+                        <ellipse cx="100" cy="40" rx="25" ry="30" class="body-part" data-part="head"/>
+                        <!-- Neck -->
+                        <rect x="90" y="65" width="20" height="15" class="body-part-connector"/>
+                        <!-- Torso -->
+                        <path d="M60 80 L140 80 L150 180 L50 180 Z" class="body-part" data-part="body"/>
+                        <!-- Left Arm -->
+                        <path d="M60 80 L40 85 L25 160 L35 165 L50 100 L60 95" class="body-part" data-part="leftArm"/>
+                        <!-- Right Arm -->
+                        <path d="M140 80 L160 85 L175 160 L165 165 L150 100 L140 95" class="body-part" data-part="rightArm"/>
+                        <!-- Left Leg -->
+                        <path d="M50 180 L70 180 L75 320 L45 320 Z" class="body-part" data-part="leftLeg"/>
+                        <!-- Right Leg -->
+                        <path d="M130 180 L150 180 L155 320 L125 320 Z" class="body-part" data-part="rightLeg"/>
+                    </svg>
+
+                    <!-- Health Bars -->
+                    <div class="health-bars">
+                        <div class="health-bar-container" data-part="head">
+                            <div class="health-bar-label">Head</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="health-bar-container" data-part="leftArm">
+                            <div class="health-bar-label">L. Arm</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="health-bar-container" data-part="rightArm">
+                            <div class="health-bar-label">R. Arm</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="health-bar-container" data-part="body">
+                            <div class="health-bar-label">Torso</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="health-bar-container" data-part="leftLeg">
+                            <div class="health-bar-label">L. Leg</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="health-bar-container" data-part="rightLeg">
+                            <div class="health-bar-label">R. Leg</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Main Inventory Grid -->
+            <div class="right-panel">
+                <div class="inventory-section">
+                    <h3>Pockets <span class="slot-count">(0/24)</span></h3>
+                    <div id="main-inventory" class="inventory-grid">
+                        <!-- Slots will be generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Backpack Panel (conditionally shown) -->
+                <div id="backpack-section" class="inventory-section hidden">
+                    <h3>Backpack <span class="slot-count">(0/0)</span></h3>
+                    <div id="backpack-inventory" class="inventory-grid">
+                        <!-- Slots will be generated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tooltip -->
+        <div id="tooltip" class="tooltip hidden">
+            <div class="tooltip-header">
+                <span class="tooltip-name">Item Name</span>
+                <span class="tooltip-count">x1</span>
+            </div>
+            <div class="tooltip-description">Item description goes here.</div>
+            <div class="tooltip-weight">Weight: 0.00 kg</div>
+            <div class="tooltip-metadata"></div>
+        </div>
+    </div>
+
+    <!-- Preview Helper (for development/testing) -->
+    <div id="preview-helper" class="preview-helper hidden">
+        <button id="btn-preview">Show Preview</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
